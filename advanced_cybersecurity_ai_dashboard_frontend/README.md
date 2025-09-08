@@ -1,82 +1,72 @@
-# Lightweight React Template for KAVIA
+# Advanced Cybersecurity AI Dashboard - Frontend
 
-This project provides a minimal React template with a clean, modern UI and minimal dependencies.
+Modern, minimalistic React frontend for real-time cybersecurity threat monitoring, AI analysis visualization, alert notifications, role-based access, configurable widgets, and historical analytics.
 
 ## Features
 
-- **Lightweight**: No heavy UI frameworks - uses only vanilla CSS and React
-- **Modern UI**: Clean, responsive design with KAVIA brand styling
-- **Fast**: Minimal dependencies for quick loading times
-- **Simple**: Easy to understand and modify
+- Real-time threat monitoring (WebSocket with mock fallback)
+- AI analysis visualization
+- Incident alert notifications (toast overlay)
+- User authentication and role management (mock: "admin" emails receive admin role)
+- Configurable dashboard widgets (add/remove in UI)
+- Historical analytics (placeholder chart area)
+- Responsive layout: sidebar, topbar, analytics panel, widgets panel, overlays
+- Light, modern theme
+  - primary: `#0A192F`
+  - secondary: `#112D4E`
+  - accent: `#F9D423`
 
 ## Getting Started
 
-In the project directory, you can run:
+- Install dependencies: `npm install`
+- Start development server: `npm start`
+- Run tests: `npm test`
+- Build production bundle: `npm run build`
 
-### `npm start`
+## Environment Variables
 
-Runs the app in development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Copy `.env.example` to `.env` and set:
 
-### `npm test`
+- `REACT_APP_API_BASE_URL` - REST API base URL (leave empty to use mock API)
+- `REACT_APP_WS_URL` - WebSocket URL for real-time stream (leave empty to use mock generator)
 
-Launches the test runner in interactive watch mode.
+The application auto-falls back to mock data if the variables are not set.
 
-### `npm run build`
+## Architecture Overview
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- `src/App.js` - Entry point, implements:
+  - Auth context and mock login
+  - Real-time WebSocket stream (mock when no WS URL)
+  - REST API wrapper with mock responses
+  - Layout (Sidebar, Topbar, panels)
+  - KPI cards, threat list, widget grid, alerts overlay
 
-## Customization
+- `src/services/api.js` - Fetch wrapper for REST (env based)
+- `src/services/ws.js` - WebSocket helper
+- `src/utils/roles.js` - Role access utilities
+- `src/App.css` - Full theme and layout styling
 
-### Colors
+## Role Management
 
-The main brand colors are defined as CSS variables in `src/App.css`:
+- Log in with any email to access; if the email contains "admin", the assigned role is `admin` and admin-only nav items appear.
+- Click "Use admin" button on login to prefill admin email/password.
 
-```css
-:root {
-  --kavia-orange: #E87A41;
-  --kavia-dark: #1A1A1A;
-  --text-color: #ffffff;
-  --text-secondary: rgba(255, 255, 255, 0.7);
-  --border-color: rgba(255, 255, 255, 0.1);
-}
-```
+## Integrating Real Backends
 
-### Components
+Replace mock fallbacks by setting environment variables:
+- REST endpoints used (examples; replace with your backend routes):
+  - `POST /auth/login` -> { token, user: { id, email, role } }
+  - `GET /auth/me` -> user profile
+  - `GET /analytics/summary`
+  - `GET /analytics/historical`
+  - `GET /widgets`
+  - `GET /alerts/recent`
+- WebSocket messages expected:
+  - JSON objects with type `THREAT_EVENT` and payload:
+    `{ id, sourceIP, severity: "low|medium|high", timestamp, rule, score, aiInsights }`
 
-This template uses pure HTML/CSS components instead of a UI framework. You can find component styles in `src/App.css`. 
+Adjust `apiFetch` and WebSocket connection endpoints to match your backend if they differ.
 
-Common components include:
-- Buttons (`.btn`, `.btn-large`)
-- Container (`.container`)
-- Navigation (`.navbar`)
-- Typography (`.title`, `.subtitle`, `.description`)
+## License
 
-## Learn More
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Internal project template for KAVIA code generation workflows.
