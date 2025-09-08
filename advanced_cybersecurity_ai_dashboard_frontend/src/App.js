@@ -151,7 +151,7 @@ function Icon({ name }) {
   const map = {
     dashboard: '📊', stream: '📡', alerts: '🚨', users: '👤', settings: '⚙️', search: '🔎', add: '➕'
   };
-  return <span aria-hidden="true">{map[name] || '•'}</span>;
+  return <span className="icon" aria-hidden="true">{map[name] || '•'}</span>;
 }
 
 // --------- Auth Screens ----------
@@ -237,13 +237,16 @@ function Topbar({ onAddWidget, onSearch }) {
   const { session, logout } = useAuth();
   return (
     <header className="topbar">
-      <div className="search" role="search">
-        <Icon name="search" />
-        <input placeholder="Search threats, hosts, users..." onChange={(e)=>onSearch?.(e.target.value)} />
-      </div>
-      <div className="actions">
-        <button className="btn" onClick={onAddWidget}><Icon name="add" /> Add widget</button>
-        <button className="btn btn-accent" onClick={logout}>Logout ({session?.user?.email})</button>
+      <div className="glass-wrap glass">
+        <div className="search" role="search" aria-label="Global search">
+          <Icon name="search" />
+          <input placeholder="Search threats, hosts, users..." onChange={(e)=>onSearch?.(e.target.value)} />
+          <div className="ai-typing" title="AI activity indicator" />
+        </div>
+        <div className="actions">
+          <button className="btn" onClick={onAddWidget}><Icon name="add" /> Add widget</button>
+          <button className="btn btn-accent" onClick={logout}>Logout ({session?.user?.email})</button>
+        </div>
       </div>
     </header>
   );
@@ -318,7 +321,7 @@ function AlertsOverlay({ toasts, onDismiss }) {
           <div style={{ fontWeight: 700 }}>{t.title}</div>
           <div style={{ fontSize: 12, color: '#475569' }}>{new Date(t.time).toLocaleString()}</div>
           <div style={{ marginTop: 6 }}><span className={`severity ${t.severity}`}>{t.severity}</span></div>
-          <div style={{ marginTop: 8 }}>
+          <div style={{ marginTop: 8, display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
             <button className="btn" onClick={()=>onDismiss(t.id)}>Dismiss</button>
           </div>
         </div>
@@ -393,11 +396,16 @@ function Dashboard() {
           <div className="panel">
             <div className="panel-header">
               <div className="panel-title">Historical Analytics</div>
+              <div className="ai-activity" aria-hidden="true">
+                <span className="ai-dot" />
+                <span className="ai-dot" />
+                <span className="ai-dot" />
+              </div>
             </div>
             <div className="panel-content">
               <SimpleChart label="Historical alerts/anomalies" />
               <div style={{ marginTop: 8, fontSize: 12, color: '#475569' }}>
-                {historical?.points?.length ? `${historical.points.length} pts` : 'loading...'}
+                {historical?.points?.length ? `${historical.points.length} pts` : 'Loading historical activity…'}
               </div>
             </div>
           </div>
@@ -405,6 +413,11 @@ function Dashboard() {
           <div className="panel">
             <div className="panel-header">
               <div className="panel-title">Real-time Threat Stream</div>
+              <div className="ai-activity" aria-hidden="true">
+                <span className="ai-dot" />
+                <span className="ai-dot" />
+                <span className="ai-dot" />
+              </div>
             </div>
             <div className="panel-content">
               <ThreatList items={realtime} filter={filter} />
@@ -416,6 +429,11 @@ function Dashboard() {
           <div className="panel">
             <div className="panel-header">
               <div className="panel-title">AI Analysis Visualization</div>
+              <div className="ai-activity" aria-hidden="true">
+                <span className="ai-dot" />
+                <span className="ai-dot" />
+                <span className="ai-dot" />
+              </div>
             </div>
             <div className="panel-content">
               <SimpleChart label="AI model confidence / risk surface" />
@@ -425,7 +443,7 @@ function Dashboard() {
           <div className="panel">
             <div className="panel-header">
               <div className="panel-title">Configurable Widgets</div>
-              <div>
+              <div className="actions">
                 <button className="btn" onClick={onAddWidget}><Icon name="add" /> Add</button>
               </div>
             </div>

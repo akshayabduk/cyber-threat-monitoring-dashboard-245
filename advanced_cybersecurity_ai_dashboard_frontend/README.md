@@ -16,6 +16,24 @@ Modern, minimalistic React frontend for real-time cybersecurity threat monitorin
   - secondary: `#112D4E`
   - accent: `#F9D423`
 
+## What's New (AI Design Refresh)
+
+We modernized the UI to reflect cutting-edge AI dashboard aesthetics:
+
+- Glassmorphism and soft neumorphism where appropriate (panels, KPIs, inputs)
+- Neural-inspired background orbs and soft gradient accents
+- Animated micro-interactions (hover lift, smooth transitions)
+- AI activity indicators (typing pulse in search; animated dots in panel headers)
+- Enhanced KPI and chart visuals with gradients and shimmer loaders
+- Softer rounded corners and minimal iconography
+- Floating notification toasts with slide/fade-in and gentle float animation
+
+You can tweak these in `src/App.css`:
+- Theme variables: at the top under `:root` (colors, radii, shadows)
+- Glassmorphism: `.glass` helper class
+- Neumorphism: `.neo` helper class
+- Activity loaders: `.ai-typing`, `.ai-activity`, `.ai-dot`, `.chart:after` (shimmer)
+
 ## Getting Started
 
 - Install dependencies: `npm install`
@@ -40,11 +58,12 @@ The application auto-falls back to mock data if the variables are not set.
   - REST API wrapper with mock responses
   - Layout (Sidebar, Topbar, panels)
   - KPI cards, threat list, widget grid, alerts overlay
+  - AI-inspired animated indicators and loaders
 
 - `src/services/api.js` - Fetch wrapper for REST (env based)
 - `src/services/ws.js` - WebSocket helper
 - `src/utils/roles.js` - Role access utilities
-- `src/App.css` - Full theme and layout styling
+- `src/App.css` - Full theme and layout styling (glassmorphism, micro-interactions, loaders)
 
 ## Role Management
 
